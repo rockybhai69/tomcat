@@ -1,0 +1,35 @@
+<form action = "welcome.jsp" method = post>
+Enter user name: <input type="text" name="user"><br>
+Enter password: <input type="text" name="pass"><br>
+<button type = "submit"> Register </button>
+</form>
+welcome.jsp:
+<%
+String name =request.getParameter("user");
+String password=request.getParameter(
+out.println("In welcome.jsp");
+if(name.equals("Sahil") && password.equals("1234"))
+{
+ 
+ HttpSession s = request.getSession();
+ session.setAttribute("user",
+ request.getRequestDispatcher("
+}
+else
+out.println("Not Valid! "); //else prints error here itself
+%>
+forwardsess.jsp:
+<%
+HttpSession s=request.getSession(false);
+if(session!=null)
+{
+ String name=(String)session.
+ out.println("In forwardsess.jsp");
+ out.println("Hello "+ name +" Welcome");
+}
+else
+{
+ out.println("Please login first");
+ request.getRequestDispatcher("
+}
+%>
