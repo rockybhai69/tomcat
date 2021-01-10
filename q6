@@ -1,0 +1,90 @@
+Attb:
+id int
+name varchar
+add varchar
+dob varchar
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+
+import java.io.*;
+import java.sql.*;
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+
+@WebServlet("/Empdeets")
+public class Empdeets extends HttpServlet
+{
+private static final String PreparedStatement = null;
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException
+{
+doGet(request, response);
+}
+
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException
+{
+response.setContentType("text/html");
+PrintWriter out = response.getWriter();
+int id = Integer.parseInt(request.getParameter("id"));
+String name = request.getParameter("name");
+String add = request.getParameter("add");
+String dob = request.getParameter("dob");
+String url = "jdbc:mysql://localhost:3306/";
+String dbName = "mydb104";
+String driver = "com.mysql.jdbc.Driver";
+String userName = "root";
+String password = "";
+Connection conn = null;
+try
+{
+//Class.forName("com.mysql.jdbc.
+Class.forName(driver).newInstance();
+conn = (Connection) DriverManager.getConnection(url+dbName,userName,password);
+PreparedStatement pstmt = (PreparedStatement) conn.prepareStatement("insert into Employee values(?,?,?,?)");
+pstmt.setInt(1,id);
+pstmt.setString(2, name);
+pstmt.setString(3, add);
+pstmt.setString(4, dob);
+pstmt.execute();
+out.print("Successfully inserted the values");
+Statement st = (Statement) conn.createStatement();
+ResultSet rs = st.executeQuery("select * from Employee");
+out.print("<table> <tr> <th>Name</th> <th>Id</th> <th>Address</th><th>DOB</th> </tr>");
+while(rs.next())
+{
+
+id = rs.getInt(1);
+name =rs.getString(2);
+add =rs.getString(3);
+dob =rs.getString(4);
+out.println("<tr> <th> "+ name +" </th> <th> "+id +" </th><th> "+add+" </th> <th>"+dob+" </th></tr> ");
+}
+}catch(Exception e)
+{e.printStackTrace();
+	}
+}
+}
+
+
+html file:
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="Empdeets" method="get">
+Enter ID: <input type="text" name="id"> 
+Enter name: <input type="text" name="name"> 
+Enter add: <input type="text" name="add"> 
+Enter dob: <input type="text" name="dob"> 
+<button type="submit">Submit</button>
+</form>
+</body>
+</html>
