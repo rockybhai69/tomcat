@@ -1,0 +1,33 @@
+<body>
+<form action = 'gradetest.jsp' method = post >
+Enter Your first subject marks <input type="text" name="marks1">
+Enter Your second subject marks <input type="text" name="marks2">
+Enter Your Third subject marks <input type="text" name="marks3">
+Enter your fourth subject marks <input type="text" name="marks4">
+Enter your fifth subject marks <input type="text" name="marks5">
+<button type="submit" >Submit </button>
+</form>
+</body>
+<body>
+<%
+int m1 = Integer.parseInt(request.getParameter("marks1"));
+int m2 = Integer.parseInt(request.getParameter("marks2"));
+int m3 = Integer.parseInt(request.getParameter("marks3"));
+int m4 = Integer.parseInt(request.getParameter("marks4"));
+int m5 = Integer.parseInt(request.getParameter("marks5"));
+float avg = (m1+m2+m3+m4+m5)/5;
+if (avg>90)
+out.print("S");
+else if(avg>80)
+out.print("A");
+else if(avg>70)
+out.print("B");
+else if(avg>60)
+out.print("C");
+else if (avg>50)
+out.print("D");
+else
+
+out.print("FAIL");
+%>
+</body>
