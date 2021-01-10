@@ -1,0 +1,18 @@
+<form action = "calcprice.jsp" method = post>
+Enter name: <input type="text" name="name"><br>
+Enter age: <input type="text" name="age"><br>
+<button type = "submit"> Submit </button>
+</form>
+JSP file:
+<%
+String name =request.getParameter("name");
+int age=Integer.parseInt(request.getParameter("age"));
+out.println("Hello "+name);
+out.println("Your age is "+age+"\n");
+if (age>62)
+out.println("The price of the ticket is Rs.50");
+else if (age<10)
+out.println("The price of the ticket is Rs.30");
+else
+out.println("The price of the ticket is Rs.80");
+%>
