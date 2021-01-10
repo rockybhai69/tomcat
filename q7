@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<FORM ACTION="prog1" METHOD="GET">
+Enter Faculty Id: <input type="text" name="Fac_ID">
+<button type="submit">Submit</button>
+<HR><HR>
+</FORM>
+</body>
+</html>
+servlet:
+import java.sql.*;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+import com.mysql.jdbc.Connection;
+
+import java.io.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class prog1
+ */
+@WebServlet("/prog1")
+public class prog1 extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public prog1() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		PrintWriter out = response.getWriter();
+		response.setContentType("text/html");
+		String url = "jdbc:mysql://localhost:3306/";
+		String dbName = "mydb104";
+		String driver = "com.mysql.jdbc.Driver";
+		String userName = "root";
+		String password = "";
+		Connection conn = null;
+		try
+		{
+		Class.forName(driver).newInstance();
+		conn = (Connection) DriverManager.getConnection(url+dbName,userName,password);
+		Statement st = (Statement) conn.createStatement();
+		ResultSet rs=st.executeQuery("select * from Subjects");
+		while(rs.next())
+		{
+		int fid=rs.getInt("Fac_ID");
+		String sub=rs.getString("Sub_Name");
+		int sid = rs.getInt("Sub_ID");
+		out.println("FacID "+fid+" SubName "+sub+" SubID "+sid);
+		out.println("<br>");
+		}
+		int id=Integer.parseInt(request.getParameter("Fac_ID"));
+		PreparedStatement pst=(PreparedStatement) conn.prepareStatement("update Subjects set Sub_Name='DataStruc',Sub_ID=4 Where Fac_ID=(?)");
+		pst.setInt(1,id);
+		int n = pst.executeUpdate();
+		out.println("Number of Rows Updated "+n );
+		Statement st1 = (Statement) conn.createStatement();
+		ResultSet rs1=st.executeQuery("select * from Subjects");
+		while(rs1.next())
+		{
+		int fid=rs1.getInt("Fac_ID");
+		String sub=rs1.getString("Sub_Name");
+		int sid = rs1.getInt("Sub_ID");
+		out.println("FacID "+fid+" SubName "+sub+" SubID "+sid);
+		out.println("<br>");
+		}
+		out.println("<br>");
+		}
+		catch(ClassNotFoundException e1)
+		{
+			e1.printStackTrace();
+		}
+		catch(Exception e)
+		{
+		e.printStackTrace();
+		}
+	
+	}
+	
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
