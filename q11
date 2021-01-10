@@ -1,0 +1,120 @@
+database name:Q7
+table: books
+
+attb:
+Book_Name 
+Author
+ID
+
+
+
+HTML FILE:
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="Q71.jsp" method="post">
+Enter book name: <input type="text" name="name">
+Enter id: <input type="text" name="id">
+Enter Author: <input type="text" name="author">
+<button type="submit">Submit</button>
+</form>
+<form action="Q72.jsp" method="post">
+Enter book name: <input type="text" name="name">
+<button type="submit">Submit</button>
+</form>
+
+
+</body>
+</html>
+
+
+JSP FILE 1(Q71.jsp):
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%@ page import="java.util.*"%>
+ <%@ page import="java.sql.*"%>
+<%
+String url="jdbc:mysql://localhost:3306/";
+String driver="com.mysql.jdbc.Driver";
+String dbname="Q7";
+String username="root";
+String password="";
+String Book_Name=request.getParameter("name");
+int id=Integer.parseInt(request.getParameter("id"));
+String author=request.getParameter("author");
+
+Connection conn=null;
+try{
+Class.forName(driver).newInstance();
+conn=DriverManager.getConnection(url+dbname,username,password);
+PreparedStatement pstmt = (PreparedStatement) conn.prepareStatement("insert into Books values(?,?,?)");
+pstmt.setString(1,Book_Name);
+pstmt.setInt(2,id);
+pstmt.setString(3,author);
+pstmt.execute();
+out.println("Details Successfully added");
+}
+catch(Exception e)
+{ e.printStackTrace();
+
+}
+
+%>
+
+</body>
+</html>
+
+
+JSP FILE 2(Q72.jsp):
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%@ page import="java.util.*"%>
+ <%@ page import="java.sql.*"%>
+<%
+String url="jdbc:mysql://localhost:3306/";
+String driver="com.mysql.jdbc.Driver";
+String dbname="Q7";
+String username="root";
+String password="";
+Connection conn=null;
+try{
+String book_name=request.getParameter("name");
+Class.forName(driver).newInstance();
+conn=DriverManager.getConnection(url+dbname,username,password);
+String query="select ID,Author from Books where Book_Name='"+book_name+"'";
+Statement stmt=conn.createStatement();
+ResultSet rs=stmt.executeQuery(query);
+while(rs.next())
+{
+out.println(" ID is "+rs.getInt(1)+"Author is "+rs.getString(2));
+
+}
+}
+catch(Exception e)
+{ e.printStackTrace();
+}
+%>
+</body>
+</html>
