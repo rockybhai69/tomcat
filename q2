@@ -1,0 +1,56 @@
+Class: qb2
+dbname: mydb1
+table: Student
+Attb: USN , NAME , cgpa
+-----------------------------------------------------------------------------------
+
+import java.sql.*;
+
+public class qb2
+{
+public static void main (String args[])
+{
+String url="jdbc:mysql://localhost:3306/";
+String dbName="mydb1";
+String driver="com.mysql.jdbc.Driver";
+String username="root";
+String pass="";
+Connection conn=null;
+
+try
+{
+Class.forName(driver).newInstance();
+conn=DriverManager.getConnection(url+dbName,username,pass);
+System.out.println("Connected to database..");
+String query = "Select * from Student where CGPA<9 ";
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery(query);
+System.out.println("Students with cgpa less than 9:");
+while(rs.next())
+{
+System.out.println(rs.getInt(1)+' '+rs.getString(2)+' '+rs.getFloat(3));
+
+}
+
+String queryb = "UPDATE Student SET cgpa=9.4 WHERE name='john'";
+Statement stmt2 = conn.createStatement();
+int c = stmt2.executeUpdate(queryb);
+System.out.println(c + " rows updated");
+conn.close();
+System.out.println("Disconnected from database");
+
+}
+catch(ClassNotFoundException e)
+{
+e.printStackTrace();
+}
+catch(SQLException e)
+{
+e.printStackTrace();
+}
+catch (Exception e)
+{
+e.printStackTrace();
+}//end
+}
+}
