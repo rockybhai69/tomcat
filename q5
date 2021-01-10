@@ -1,0 +1,44 @@
+import java.io.*;
+import java.util.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
+@WebServlet ("/qb5")
+public class qb5
+extends HttpServlet {
+public void doGet(HttpServletRequest req, HttpServletResponse res)
+throws ServletException, IOException {
+// Get print writer.
+PrintWriter out = res.getWriter();
+res.setContentType("text/html");
+String name=req.getParameter("NAME");
+String ans = initials(name);
+out.println("<html><body>"
++"<h1>Initials: "+ans);
+}
+public String initials(String Name)
+{
+int n = Name.length();
+String s = "" + Name.charAt(0);
+for(int i = 1; i < n; i++)
+{
+if(Name.charAt(i) == ' ') {
+s = s + Name.charAt(i+1);
+}
+}
+return s;
+}
+// Servlet to handle “post” method
+public void doPost(HttpServletRequest req, HttpServletResponse res)
+throws ServletException, IOException {
+doGet(req,res);
+}
+}
+<HTML>
+<BODY>
+<FORM ACTION="qb5" METHOD="GET">
+ENTER NAME: <INPUT TYPE="TEXT" NAME="NAME"><BR>
+<INPUT TYPE="SUBMIT" VALUE="SUBMIT"><HR><HR>
+</FORM>
+</BODY>
+</HTML>
